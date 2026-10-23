@@ -1,0 +1,612 @@
+/* ==========================================================================
+   WEBVZARD IT SOLUTIONS: SCRIPT (how the page BEHAVES)
+   --------------------------------------------------------------------------
+   A. Navigation          E. Contact form to WhatsApp
+   B. PDF links           F. Hero background curve
+   C. Services list       G. Scroll effects and counters
+   D. WhatsApp chat box   H. 3D hero object     I. Government section cards
+   J. Process timeline    K. Cursor glow    L. Intro clean-up
+   M. Service quote buttons
+   Quick edits:
+     - PDF links: section B (the PDFS list)
+     - WhatsApp number: section E (search 919887133425)
+   Note: three.js (js/vendor/) is loaded first by index.html, then this file runs.
+   ========================================================================== */
+/* ----------------------------------------------------------------------
+   A. NAVIGATION: darken the bar on scroll, open and close the mobile menu
+   -------------------------------------------------------------------- */
+var nv = document.querySelector("nav"),
+  mn = document.getElementById("menu"),
+  bg = document.getElementById("bg");
+function sc() {
+  nv.classList.toggle("scrolled", scrollY > 40);
+}
+sc();
+addEventListener("scroll", sc, { passive: true });
+bg.addEventListener("click", function () {
+  var o = mn.classList.toggle("open");
+  bg.textContent = o ? "✕" : "☰";
+  bg.setAttribute("aria-expanded", o);
+});
+mn.addEventListener("click", function (e) {
+  if (e.target.closest("a")) {
+    mn.classList.remove("open");
+    bg.textContent = "☰";
+  }
+});
+
+/* ----------------------------------------------------------------------
+   B. PDF LINKS: paste your PDF addresses in the PDFS list below
+   -------------------------------------------------------------------- */
+/* Paste your PDF links here, e.g. course:'https://yoursite.com/course.pdf' */
+var PDFS = { course: "", portfolio: "" };
+document.addEventListener("click", function (e) {
+  var a = e.target.closest("[data-pdf]");
+  if (!a) return;
+  e.preventDefault();
+  var u = PDFS[a.dataset.pdf];
+  if (u) {
+    window.open(u, "_blank", "noopener");
+  } else {
+    var t = document.createElement("div");
+    t.className = "toast";
+    t.setAttribute("role", "status");
+    t.textContent = "This PDF is coming soon";
+    document.body.appendChild(t);
+    setTimeout(function () {
+      t.remove();
+    }, 2500);
+  }
+});
+
+/* ----------------------------------------------------------------------
+   C. SERVICES LIST: smooth open and close, one item open at a time
+   -------------------------------------------------------------------- */
+(function () {
+  var all = [].slice.call(document.querySelectorAll(".svc details")),
+    rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function run(d, from, to, done) {
+    if (rm) {
+      done && done();
+      return;
+    }
+    d.busy = true;
+    d.style.overflow = "hidden";
+    var a = d.animate(
+      { height: [from + "px", to + "px"] },
+      { duration: 480, easing: "cubic-bezier(.22,.8,.22,1)" },
+    );
+    a.onfinish = function () {
+      d.style.overflow = "";
+      d.busy = false;
+      done && done();
+    };
+  }
+  function shut(d) {
+    if (!d.open || d.busy) return;
+    var sm = d.querySelector("summary");
+    run(d, d.offsetHeight, sm.offsetHeight + 1, function () {
+      d.open = false;
+    });
+    if (rm) d.open = false;
+  }
+  function show(d) {
+    if (d.open || d.busy) return;
+    var from = d.offsetHeight;
+    d.open = true;
+    run(d, from, d.offsetHeight);
+  }
+  all.forEach(function (d) {
+    d.querySelector("summary").addEventListener("click", function (e) {
+      e.preventDefault();
+      if (d.busy) return;
+      if (d.open) {
+        shut(d);
+      } else {
+        all.forEach(function (o) {
+          if (o !== d) shut(o);
+        });
+        show(d);
+      }
+    });
+  });
+})();
+
+/* ----------------------------------------------------------------------
+   D. WHATSAPP CHAT BOX: opens on hover or click, closes when the mouse leaves
+   -------------------------------------------------------------------- */
+(function () {
+  var w = document.querySelector(".wc"),
+    c = document.getElementById("wcard"),
+    b = document.getElementById("wab"),
+    x = document.getElementById("wx"),
+    tm;
+  function set(o) {
+    clearTimeout(tm);
+    c.classList.toggle("open", o);
+    c.setAttribute("aria-hidden", !o);
+    b.setAttribute("aria-expanded", o);
+  }
+  function later() {
+    clearTimeout(tm);
+    tm = setTimeout(function () {
+      set(false);
+    }, 250);
+  }
+  b.addEventListener("click", function () {
+    set(!c.classList.contains("open"));
+  });
+  x.addEventListener("click", function () {
+    set(false);
+  });
+  w.addEventListener("pointerenter", function (e) {
+    if (e.pointerType === "mouse") set(true);
+  });
+  w.addEventListener("pointerleave", function (e) {
+    if (e.pointerType === "mouse") later();
+  });
+  document.addEventListener("click", function (e) {
+    if (!w.contains(e.target)) set(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") set(false);
+  });
+})();
+
+/* ----------------------------------------------------------------------
+   E. CONTACT FORM: sends the enquiry to WhatsApp
+   -------------------------------------------------------------------- */
+document.getElementById("f").addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (document.getElementById("hp").value) return; /* a bot filled the hidden field */
+  var t =
+    "Hi WebvzardItSolutions, I’m " +
+    n.value +
+    ". I’m interested in " +
+    s.value +
+    ". " +
+    m.value;
+  window.open(
+    "https://wa.me/919887133425?text=" + encodeURIComponent(t),
+    "_blank",
+  );
+});
+
+/* ----------------------------------------------------------------------
+   F. HERO BACKGROUND: animated growth curve drawn on a canvas
+   -------------------------------------------------------------------- */
+(function () {
+  var cv = document.getElementById("cv"),
+    c = cv.getContext("2d"),
+    W,
+    H,
+    P = [],
+    N = 150,
+    mx = -999,
+    my = -999,
+    t0 = performance.now();
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function curve(u) {
+    return (
+      0.94 - 0.66 * Math.pow(u, 2) - 0.025 * Math.sin(u * 14) * (1 - u * 0.4)
+    );
+  }
+  function size() {
+    var r = cv.getBoundingClientRect(),
+      d = Math.min(devicePixelRatio || 1, 2);
+    W = r.width;
+    H = r.height;
+    cv.width = W * d;
+    cv.height = H * d;
+    c.setTransform(d, 0, 0, d, 0, 0);
+    P = [];
+    for (var i = 0; i < N; i++) {
+      var u = i / (N - 1);
+      P.push({
+        u: u,
+        x: Math.random() * W,
+        y: Math.random() * H,
+        tx: W * (0.08 + 0.88 * u),
+        ty: H * curve(u) + (Math.random() - 0.5) * 26,
+        r: 1.5 + Math.random() * 2.2,
+      });
+    }
+  }
+  function frame(now) {
+    var k = rm ? 1 : Math.min((now - t0) / 3200, 1),
+      e = 1 - Math.pow(1 - k, 3);
+    c.clearRect(0, 0, W, H);
+    c.lineWidth = 3;
+    var g = c.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0, "#0f72d6");
+    g.addColorStop(1, "#13c4ff");
+    c.strokeStyle = g;
+    c.shadowColor = "#0f72d6";
+    c.shadowBlur = 18;
+    c.beginPath();
+    var lim = Math.floor(e * (N - 1));
+    for (var i = 0; i <= lim; i++) {
+      var u = i / (N - 1),
+        x = W * (0.08 + 0.88 * u),
+        y = H * curve(u);
+      i ? c.lineTo(x, y) : c.moveTo(x, y);
+    }
+    c.stroke();
+    c.shadowBlur = 0;
+    for (var j = 0; j < N; j++) {
+      var p = P[j],
+        on = p.u <= e;
+      var ax = on ? p.tx : p.x + Math.sin(now / 900 + j) * 0.4,
+        ay = on ? p.ty : p.y + Math.cos(now / 1100 + j) * 0.4;
+      p.x += (ax - p.x) * 0.06;
+      p.y += (ay - p.y) * 0.06;
+      var dx = p.x - mx,
+        dy = p.y - my,
+        d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 110) {
+        p.x += (dx / d) * (110 - d) * 0.12;
+        p.y += (dy / d) * (110 - d) * 0.12;
+      }
+      c.fillStyle = on ? "rgba(255,255,255,.9)" : "rgba(120,190,255,.45)";
+      c.beginPath();
+      c.arc(p.x, p.y, p.r, 0, 6.283);
+      c.fill();
+    }
+    if (!rm) requestAnimationFrame(frame);
+  }
+  size();
+  addEventListener("resize", size);
+  cv.parentNode.addEventListener("mousemove", function (e) {
+    var r = cv.getBoundingClientRect();
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
+  });
+  cv.parentNode.addEventListener("mouseleave", function () {
+    mx = my = -999;
+  });
+  requestAnimationFrame(frame);
+})();
+
+/* ----------------------------------------------------------------------
+   G. SCROLL EFFECTS: progress bar, reveal on scroll, counters, menu highlight, hero movement
+   -------------------------------------------------------------------- */
+(function () {
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches,
+    pg = document.getElementById("pg"),
+    hero = document.querySelector(".hero");
+  function prog() {
+    var h = document.documentElement.scrollHeight - innerHeight;
+    pg.style.transform =
+      "scaleX(" + (h > 0 ? Math.min(scrollY / h, 1) : 0) + ")";
+  }
+  prog();
+  addEventListener("scroll", prog, { passive: true });
+  addEventListener("resize", prog);
+  /* spotlight on pricing cards */
+  document.querySelectorAll(".plan").forEach(function (p) {
+    p.addEventListener("pointermove", function (e) {
+      var r = p.getBoundingClientRect();
+      p.style.setProperty("--mx", e.clientX - r.left + "px");
+      p.style.setProperty("--my", e.clientY - r.top + "px");
+    });
+  });
+  /* scroll-spy for menu */
+  var links = [].slice.call(document.querySelectorAll('.menu a[href^="#"]'));
+  if ("IntersectionObserver" in window) {
+    var spy = new IntersectionObserver(
+      function (en) {
+        en.forEach(function (x) {
+          if (x.isIntersecting) {
+            links.forEach(function (a) {
+              a.classList.toggle(
+                "act",
+                a.getAttribute("href") === "#" + x.target.id,
+              );
+            });
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    document.querySelectorAll("section[id]").forEach(function (sec) {
+      spy.observe(sec);
+    });
+  }
+  if (rm || !("IntersectionObserver" in window)) return;
+  /* hero parallax follows the pointer */
+  hero.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse") return;
+    var r = hero.getBoundingClientRect();
+    hero.style.setProperty(
+      "--px",
+      ((e.clientX - r.left) / r.width - 0.5).toFixed(3),
+    );
+    hero.style.setProperty(
+      "--py",
+      ((e.clientY - r.top) / r.height - 0.5).toFixed(3),
+    );
+  });
+  /* scroll reveal with stagger */
+  var sel =
+      "h2,.lead,.promises>div,.svc details,.steps li,.plan,.note,.quote,.who,.ceo .pp,.crew-t,.crew figure,.ci li,form,.stat",
+    cnt = new Map();
+  var io = new IntersectionObserver(
+    function (en) {
+      en.forEach(function (x) {
+        if (!x.isIntersecting) return;
+        x.target.classList.add("in");
+        io.unobserve(x.target);
+        var b = x.target.querySelector && x.target.querySelector("b[data-to]");
+        if (b) count(b);
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -6% 0px" },
+  );
+  document.querySelectorAll(sel).forEach(function (el) {
+    var n = cnt.get(el.parentNode) || 0;
+    cnt.set(el.parentNode, n + 1);
+    el.style.setProperty("--d", Math.min(n * 0.09, 0.5) + "s");
+    el.classList.add("rv");
+    io.observe(el);
+  });
+  /* count-up numbers */
+  function count(b) {
+    var to = +b.dataset.to,
+      suf = b.dataset.suf || "",
+      t0 = performance.now(),
+      D = 1600;
+    b.textContent = "0" + suf;
+    (function step(now) {
+      var k = Math.min((now - t0) / D, 1),
+        e = 1 - Math.pow(1 - k, 3);
+      b.textContent = Math.round(to * e) + suf;
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+})();
+
+/* ----------------------------------------------------------------------
+   H. 3D HERO OBJECT (uses the Three.js library loaded in index.html)
+   -------------------------------------------------------------------- */
+(function () {
+  var el = document.getElementById("g3"),
+    T = window.THREE,
+    rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if (!el || !T) return;
+  var R;
+  try {
+    R = new T.WebGLRenderer({ alpha: true, antialias: true });
+  } catch (e) {
+    return;
+  }
+  R.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  el.appendChild(R.domElement);
+  var S = new T.Scene(),
+    C = new T.PerspectiveCamera(40, 1, 0.1, 60),
+    W = new T.Group(),
+    M = function (c, o, x) {
+      return new T.MeshBasicMaterial(
+        Object.assign({ color: c, transparent: true, opacity: o }, x || {}),
+      );
+    };
+  C.position.z = 12;
+  S.add(W);
+  var ico = new T.IcosahedronGeometry(2.6, 2);
+  W.add(
+    new T.LineSegments(
+      new T.EdgesGeometry(ico),
+      new T.LineBasicMaterial({
+        color: 0x2f95ff,
+        transparent: true,
+        opacity: 0.75,
+      }),
+    ),
+  );
+  W.add(
+    new T.Points(ico, new T.PointsMaterial({ color: 0x13c4ff, size: 0.075 })),
+  );
+  W.add(new T.Mesh(new T.SphereGeometry(2.45, 32, 32), M(0x0a3a96, 0.4)));
+  var core = new T.Mesh(
+    new T.IcosahedronGeometry(1.2, 1),
+    M(0x5fd8ff, 0.85, { wireframe: true }),
+  );
+  W.add(core);
+  var orbs = [];
+  [
+    [3.3, 0.5, 0x13c4ff],
+    [3.8, -0.9, 0x5fd8ff],
+    [4.3, 1.3, 0xffffff],
+  ].forEach(function (o, i) {
+    var g = new T.Group();
+    g.rotation.set(o[1], i * 1.1, 0);
+    g.add(new T.Mesh(new T.TorusGeometry(o[0], 0.012, 8, 160), M(o[2], 0.45)));
+    var d = new T.Mesh(new T.SphereGeometry(0.13, 16, 16), M(o[2], 1));
+    g.add(d);
+    W.add(g);
+    orbs.push({ d: d, r: o[0], v: 0.35 + i * 0.18, a: i * 2 });
+  });
+  var n = 320,
+    p = new Float32Array(n * 3);
+  for (var i = 0; i < n; i++) {
+    var r = 6 + Math.random() * 5,
+      t = Math.random() * 6.283,
+      u = Math.acos(2 * Math.random() - 1);
+    p[i * 3] = r * Math.sin(u) * Math.cos(t);
+    p[i * 3 + 1] = r * Math.sin(u) * Math.sin(t);
+    p[i * 3 + 2] = r * Math.cos(u) - 3;
+  }
+  var sg = new T.BufferGeometry();
+  sg.setAttribute("position", new T.BufferAttribute(p, 3));
+  var stars = new T.Points(
+    sg,
+    new T.PointsMaterial({
+      color: 0xb3cdf2,
+      size: 0.045,
+      transparent: true,
+      opacity: 0.8,
+    }),
+  );
+  S.add(stars);
+  function size() {
+    var w = el.clientWidth,
+      h = el.clientHeight;
+    if (!w || !h) return;
+    R.setSize(w, h);
+    C.aspect = w / h;
+    C.updateProjectionMatrix();
+    W.scale.setScalar(w < 640 ? 0.7 : 1);
+    draw();
+  }
+  var tx = 0,
+    ty = 0,
+    vis = true;
+  function draw() {
+    R.render(S, C);
+  }
+  function tick() {
+    requestAnimationFrame(tick);
+    if (!vis || document.hidden) return;
+    W.rotation.y += 0.0032;
+    W.rotation.x += (ty * 0.6 - W.rotation.x) * 0.04;
+    W.position.x += (tx * 0.8 - W.position.x) * 0.04;
+    core.rotation.y -= 0.01;
+    core.rotation.x += 0.006;
+    stars.rotation.y += 0.0004;
+    var tm = performance.now() / 1000;
+    orbs.forEach(function (o) {
+      var a = o.a + tm * o.v;
+      o.d.position.set(Math.cos(a) * o.r, Math.sin(a) * o.r, 0);
+    });
+    draw();
+  }
+  addEventListener("resize", size);
+  size();
+  el.classList.add("on");
+  if (rm) return;
+  document.addEventListener("pointermove", function (e) {
+    if (e.pointerType && e.pointerType !== "mouse") return;
+    tx = e.clientX / innerWidth - 0.5;
+    ty = e.clientY / innerHeight - 0.5;
+  });
+  if ("IntersectionObserver" in window)
+    new IntersectionObserver(function (e) {
+      vis = e[0].isIntersecting;
+    }).observe(el);
+  tick();
+})();
+
+/* ----------------------------------------------------------------------
+   I. GOVERNMENT SECTION: card animations
+   -------------------------------------------------------------------- */
+(function () {
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches,
+    cards = [].slice.call(document.querySelectorAll(".gv"));
+  cards.forEach(function (c, i) {
+    c.style.setProperty("--d", (i % 3) * 0.12 + "s");
+  });
+  if (rm || !("IntersectionObserver" in window)) {
+    cards.forEach(function (c) {
+      c.classList.add("in");
+    });
+    return;
+  }
+  var io = new IntersectionObserver(
+    function (en) {
+      en.forEach(function (x) {
+        if (x.isIntersecting) {
+          x.target.classList.add("in");
+          io.unobserve(x.target);
+        }
+      });
+    },
+    { threshold: 0.2 },
+  );
+  cards.forEach(function (c) {
+    io.observe(c);
+  });
+  /* 3D tilt on cards and service images (mouse only) */
+  document.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse") return;
+    var t = e.target.closest && e.target.closest(".gv,.il");
+    document.querySelectorAll(".gv,.il").forEach(function (o) {
+      if (o !== t && o.style.transform) o.style.transform = "";
+    });
+    if (!t) return;
+    var r = t.getBoundingClientRect(),
+      x = (e.clientX - r.left) / r.width - 0.5,
+      y = (e.clientY - r.top) / r.height - 0.5;
+    t.style.transform =
+      "perspective(900px) rotateX(" +
+      (-y * 9).toFixed(2) +
+      "deg) rotateY(" +
+      (x * 11).toFixed(2) +
+      "deg) translateZ(0)";
+  });
+})();
+
+/* ----------------------------------------------------------------------
+   J. PROCESS TIMELINE: fills the glowing line as the steps scroll into view
+   -------------------------------------------------------------------- */
+(function () {
+  var o = document.querySelector(".steps");
+  if (!o) return;
+  var li = [].slice.call(o.children);
+  function update() {
+    var r = o.getBoundingClientRect(), vh = innerHeight,
+      vertical = matchMedia("(max-width:999px)").matches,
+      p = vertical ? (vh * 0.62 - r.top) / r.height : (vh * 0.78 - r.top) / (vh * 0.45);
+    p = Math.max(0, Math.min(1, p));
+    o.style.setProperty("--p", p.toFixed(3));
+    li.forEach(function (e) {
+      var f = vertical ? e.offsetTop / o.offsetHeight : e.offsetLeft / o.offsetWidth;
+      e.classList.toggle("on", p > 0.001 && p >= f);
+    });
+  }
+  update();
+  addEventListener("scroll", update, { passive: true });
+  addEventListener("resize", update);
+})();
+
+/* ----------------------------------------------------------------------
+   K. CURSOR GLOW: soft light follows the mouse (dark sections only, mouse devices only)
+   -------------------------------------------------------------------- */
+(function () {
+  var g = document.getElementById("cg");
+  if (!g || !matchMedia("(hover:hover)").matches || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  var x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
+  function dark(el) {
+    if (el && el.closest && el.closest(".hero,.band")) return true;
+    var c = getComputedStyle(document.body).backgroundColor.match(/\d+/g);
+    return !!c && c[0] * 0.299 + c[1] * 0.587 + c[2] * 0.114 < 90; /* page itself is in dark mode */
+  }
+  addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse") return;
+    tx = e.clientX; ty = e.clientY;
+    g.classList.toggle("on", dark(e.target));
+  });
+  document.documentElement.addEventListener("mouseleave", function () { g.classList.remove("on"); });
+  (function loop() {
+    x += (tx - x) * 0.14; y += (ty - y) * 0.14;
+    g.style.transform = "translate3d(" + x + "px," + y + "px,0)";
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ----------------------------------------------------------------------
+   L. INTRO CLEAN-UP: remember it was shown, then remove it from the page
+   -------------------------------------------------------------------- */
+(function () {
+  var i = document.getElementById("intro");
+  if (!i) return;
+  try { sessionStorage.setItem("wi", "1"); } catch (e) {}
+  setTimeout(function () { i.remove(); }, 3000);
+})();
+
+/* ----------------------------------------------------------------------
+   M. SERVICE QUOTE BUTTONS: choose the matching service in the contact form
+   ---------------------------------------------------------------------- */
+document.addEventListener("click", function (e) {
+  var a = e.target.closest(".sq");
+  var sel = document.getElementById("s");
+  if (a && sel) sel.value = a.dataset.svc;
+});

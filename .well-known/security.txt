@@ -1,0 +1,5 @@
+Contact: mailto:Webvzarditsolutions@gmail.com
+Expires: 2027-10-01T00:00:00.000Z
+Preferred-Languages: en, hi
+# Replace the line below with your real address, then keep this file up to date each year.
+Canonical: https://YOUR-DOMAIN.in/.well-known/security.txt

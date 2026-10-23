@@ -1,0 +1,708 @@
+<!doctype html>
+<!--
+  WEBVZARD IT SOLUTIONS WEBSITE
+  How the files fit together:
+    index.html       = the content (text, sections, buttons)   <- you are here
+    css/styles.css   = how it looks (colours, fonts, animation)
+    js/main.js       = how it behaves (menu, scroll effects, WhatsApp)
+    images/          = logos (replace a file, keep the same name)
+  Each section below has a labelled comment. Use Ctrl+F to find it.
+-->
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <meta name="theme-color" content="#061638" />
+    <title>WebvzardITSolutions | Websites and marketing that build trust</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-mFlcpzrJj+SVgzRpTeckfDaFcS9T7M2HU2PPRe8ayXQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!-- ===== SEARCH + SHARING: replace https://YOUR-DOMAIN.in with your real website address (see README) ===== -->
+    <meta name="description" content="Webvzard IT Solutions, Jaipur: web development, SEO, social media marketing, graphic design, video editing and digital marketing courses. Clear, fixed pricing and a real team to call." />
+    <link rel="canonical" href="https://YOUR-DOMAIN.in/" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Webvzard IT Solutions" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="Webvzard IT Solutions | Websites and marketing that build trust" />
+    <meta property="og:description" content="Webvzard IT Solutions, Jaipur: web development, SEO, social media marketing, graphic design, video editing and digital marketing courses. Clear, fixed pricing and a real team to call." />
+    <meta property="og:url" content="https://YOUR-DOMAIN.in/" />
+    <meta property="og:image" content="https://YOUR-DOMAIN.in/images/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Webvzard IT Solutions: websites and marketing that build trust" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Webvzard IT Solutions | Websites and marketing that build trust" />
+    <meta name="twitter:description" content="Webvzard IT Solutions, Jaipur: web development, SEO, social media marketing, graphic design, video editing and digital marketing courses. Clear, fixed pricing and a real team to call." />
+    <meta name="twitter:image" content="https://YOUR-DOMAIN.in/images/og-image.jpg" />
+    <!-- ===== SPEED: load the two most important fonts early ===== -->
+    <link rel="preload" href="fonts/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/bricolage-grotesque-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Webvzard IT Solutions", "url": "https://YOUR-DOMAIN.in/", "logo": "https://YOUR-DOMAIN.in/images/logo-full.webp", "image": "https://YOUR-DOMAIN.in/images/og-image.jpg", "description": "Webvzard IT Solutions, Jaipur: web development, SEO, social media marketing, graphic design, video editing and digital marketing courses. Clear, fixed pricing and a real team to call.", "telephone": "+91 98871 33425", "email": "Webvzarditsolutions@gmail.com", "founder": {"@type": "Person", "name": "Kuldeep Singh Shekhawat"}, "address": {"@type": "PostalAddress", "streetAddress": "39A Shekhawati Nagar, near Vaidya ji ka Chauraha, Nivaaru Road", "addressLocality": "Jaipur", "addressRegion": "Rajasthan", "addressCountry": "IN"}, "areaServed": "Worldwide"}</script>
+    <link rel="stylesheet" href="css/styles.css" />
+  <script>try{var d=document.documentElement;if(sessionStorage.getItem('wi'))d.classList.add('ns');else{d.classList.add('io');setTimeout(function(){d.classList.remove('io')},2000)}}catch(e){}</script>
+</head>
+  <body>
+    <!-- ==================== INTRO ANIMATION: logo draws itself, then the page is revealed (once per visit) ==================== -->
+    <div class="intro" id="intro" aria-hidden="true">
+      <svg class="iw" viewBox="0 0 140 110"><defs><linearGradient id="ig2" x1="0" x2="1"><stop offset="0" stop-color="#1fc8e6"/><stop offset="1" stop-color="#6a4cff"/></linearGradient></defs><path pathLength="1" d="M12 14L38 92L70 36L102 92L128 14"/></svg>
+      <img src="images/logo.webp" alt="" />
+      <p>WEBVZARD IT SOLUTIONS</p>
+    </div>
+
+    <div class="prog" id="pg" aria-hidden="true"></div>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#feda75" />
+          <stop offset=".4" stop-color="#fa7e1e" />
+          <stop offset=".7" stop-color="#d62976" />
+          <stop offset="1" stop-color="#4f5bd5" />
+        </linearGradient>
+        <symbol id="yt" viewBox="0 0 26 26">
+          <circle cx="13" cy="13" r="13" fill="#f00" />
+          <path d="M10.5 9v8l7-4z" fill="#fff" />
+        </symbol>
+        <symbol id="fb" viewBox="0 0 26 26">
+          <circle cx="13" cy="13" r="13" fill="#1877f2" />
+          <path
+            d="M14.2 21v-7h2.3l.4-2.8h-2.7V9.4c0-.8.3-1.3 1.4-1.3h1.4V5.6c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.6v2H8.7V14H11v7z"
+            fill="#fff"
+          />
+        </symbol>
+        <symbol id="in" viewBox="0 0 26 26">
+          <circle cx="13" cy="13" r="13" fill="url(#ig)" />
+          <rect x="7" y="7" width="12" height="12" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6" />
+          <circle cx="13" cy="13" r="2.8" fill="none" stroke="#fff" stroke-width="1.6" />
+          <circle cx="16.5" cy="9.5" r="1" fill="#fff" />
+        </symbol>
+        <symbol id="ph" viewBox="0 0 24 24">
+          <path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" />
+        </symbol>
+        <symbol id="ml" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="M3 7l9 6 9-6" />
+        </symbol>
+      </defs>
+    </svg>
+    <!-- ==================== NAVIGATION BAR: logo, menu links, phone, social icons. Edit menu links here. ==================== -->
+<nav>
+      <div class="wrap nb">
+        <a class="brand" href="#top" aria-label="Webvzard IT Solutions home"
+          ><span class="lg"><img src="images/logo.webp" alt="" width="44" height="44" /></span
+          ><span class="bt">Webvzard<small>IT Solutions</small></span></a
+        >
+        <ul class="menu" id="menu">
+          <li><a href="#top">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#" data-pdf="course">Course</a></li>
+          <li><a href="#" data-pdf="portfolio">View Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li class="mx">
+            <a href="tel:+919887133425">+91 98871 33425</a
+            ><a href="mailto:Webvzarditsolutions@gmail.com">Webvzarditsolutions@gmail.com</a>
+            <div class="soc">
+              <a href="https://youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+                ><svg><use href="#yt" /></svg></a
+              ><a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                ><svg><use href="#fb" /></svg></a
+              ><a
+                href="https://www.instagram.com/webvzarditsolutions?igsh=djl2bzhpNDl4d3Zz"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                ><svg><use href="#in" /></svg
+              ></a>
+            </div>
+          </li>
+        </ul>
+        <div class="tools">
+          <a class="ph" href="tel:+919887133425" aria-label="Call +91 98871 33425"
+            ><svg><use href="#ph" /></svg><span>+91 98871 33425</span></a
+          ><a class="ic" href="mailto:Webvzarditsolutions@gmail.com" aria-label="Email us"
+            ><svg><use href="#ml" /></svg
+          ></a>
+          <div class="soc">
+            <a href="https://youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+              ><svg><use href="#yt" /></svg></a
+            ><a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+              ><svg><use href="#fb" /></svg></a
+            ><a
+              href="https://www.instagram.com/webvzarditsolutions?igsh=djl2bzhpNDl4d3Zz"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              ><svg><use href="#in" /></svg
+            ></a>
+          </div>
+        </div>
+        <button class="burger" id="bg" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </nav>
+
+    <!-- ==================== HERO: main headline and call-to-action buttons ==================== -->
+<header class="hero" id="top">
+      <canvas id="cv" aria-hidden="true"></canvas>
+      <div class="g3" id="g3" aria-hidden="true"></div>
+      <div class="wrap">
+        <h1 aria-label="Your business, built to be trusted online.">
+          <span>Your</span> <span style="animation-delay: 0.12s">business,</span>
+          <span style="animation-delay: 0.24s">built</span> <span style="animation-delay: 0.36s">to</span>
+          <span style="animation-delay: 0.48s">be</span> <span style="animation-delay: 0.6s">trusted.</span>
+        </h1>
+        <p class="lede">
+          We design websites, run SEO and social media, and create brands that turn first-time visitors into
+          customers who come back.
+        </p>
+        <div class="cta">
+          <a class="btn main" href="#contact">Start your project</a
+          ><a class="btn ghost" href="#pricing">See clear pricing</a>
+        </div>
+        <div class="proof">
+          <span><b>Based in Jaipur</b>, serving clients worldwide</span
+          ><span><b>Certified</b> mentors and marketers</span><span><b>Fixed prices</b> shown upfront</span>
+        </div>
+      </div>
+      
+      <!-- ==================== HERO MOCKUP: a website being "built" live (decorative) ==================== -->
+      <div class="mock" aria-hidden="true">
+        <div class="mw">
+          <div class="mbar"><i></i><i></i><i></i><span>yourbusiness.in</span></div>
+          <div class="mbd">
+            <div class="mh a1"><b></b><u></u><u></u><u></u></div>
+            <div><div class="l1 a2"></div><div class="l2 a3"></div><div class="mbtn a4"></div></div>
+            <div class="mch"><s class="a5" style="--h:38%"></s><s class="a6" style="--h:58%"></s><s class="a7" style="--h:48%"></s><s class="a8" style="--h:78%"></s><s class="a9" style="--h:100%"></s></div>
+            <div class="mlive a10">&#10003; Live</div>
+          </div>
+        </div>
+      </div>
+      <!-- ==================== RAJASTHAN TOUCH: jaali lattice and a Jaipur-style skyline ==================== -->
+      <div class="jaali" aria-hidden="true"></div>
+      <svg class="sky" viewBox="0 0 1200 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path fill-rule="evenodd" d="M0 98h1200v22h-1200zM4 90h10v8h-10zM22 90h10v8h-10zM40 90h10v8h-10zM58 90h10v8h-10zM148 90h10v8h-10zM166 90h10v8h-10zM184 90h10v8h-10zM202 90h10v8h-10zM220 90h10v8h-10zM238 90h10v8h-10zM256 90h10v8h-10zM274 90h10v8h-10zM292 90h10v8h-10zM400 90h10v8h-10zM418 90h10v8h-10zM436 90h10v8h-10zM454 90h10v8h-10zM472 90h10v8h-10zM490 90h10v8h-10zM508 90h10v8h-10zM688 90h10v8h-10zM706 90h10v8h-10zM724 90h10v8h-10zM742 90h10v8h-10zM760 90h10v8h-10zM778 90h10v8h-10zM796 90h10v8h-10zM886 90h10v8h-10zM904 90h10v8h-10zM922 90h10v8h-10zM940 90h10v8h-10zM958 90h10v8h-10zM976 90h10v8h-10zM994 90h10v8h-10zM1012 90h10v8h-10zM1030 90h10v8h-10zM1138 90h10v8h-10zM1156 90h10v8h-10zM1174 90h10v8h-10zM1192 90h10v8h-10zM92 76h4v22h-4zM104 76h4v22h-4zM116 76h4v22h-4zM124 76h4v22h-4zM86 70h48v6h-48zM88 70A22 22 0 0 1 132 70zM108.5 40h3v8h-3zM332 76h4v22h-4zM344 76h4v22h-4zM356 76h4v22h-4zM364 76h4v22h-4zM326 70h48v6h-48zM328 70A22 22 0 0 1 372 70zM348.5 40h3v8h-3zM832 76h4v22h-4zM844 76h4v22h-4zM856 76h4v22h-4zM864 76h4v22h-4zM826 70h48v6h-48zM828 70A22 22 0 0 1 872 70zM848.5 40h3v8h-3zM1072 76h4v22h-4zM1084 76h4v22h-4zM1096 76h4v22h-4zM1104 76h4v22h-4zM1066 70h48v6h-48zM1068 70A22 22 0 0 1 1112 70zM1088.5 40h3v8h-3zM534.0 81h132v17h-132zM547.5 86h6v9h-6zM564.0 86h6v9h-6zM580.5 86h6v9h-6zM597.0 86h6v9h-6zM613.5 86h6v9h-6zM630.0 86h6v9h-6zM646.5 86h6v9h-6zM546.0 64h108v17h-108zM561.0 69h6v9h-6zM579.0 69h6v9h-6zM597.0 69h6v9h-6zM615.0 69h6v9h-6zM633.0 69h6v9h-6zM558.0 47h84v17h-84zM571.8 52h6v9h-6zM588.6 52h6v9h-6zM605.4 52h6v9h-6zM622.2 52h6v9h-6zM570.0 30h60v17h-60zM582.0 35h6v9h-6zM597.0 35h6v9h-6zM612.0 35h6v9h-6zM584 30A16 16 0 0 1 616 30zM598.5 4h3v10h-3z"/></svg>
+      <div class="chip"><strong>Organic growth</strong>Built on white-hat SEO</div>
+    </header>
+    <!-- ==================== SCROLLING STRIP of services ==================== -->
+<div class="tick" aria-hidden="true">
+      <div class="tk">
+        <span>Web Development</span><span>SEO</span><span>Social Media Marketing</span
+        ><span>Graphic Design &amp; Branding</span><span>Video Editing</span
+        ><span>Digital Marketing Courses</span><span>Web Development</span><span>SEO</span
+        ><span>Social Media Marketing</span><span>Graphic Design &amp; Branding</span
+        ><span>Video Editing</span><span>Digital Marketing Courses</span>
+      </div>
+    </div>
+    <!-- ==================== AT A GLANCE: four counting numbers (edit data-to="" for each number) ==================== -->
+<section class="stats" aria-label="At a glance">
+      <div class="wrap sg">
+        <div class="stat"><b data-to="6">6</b><span>Core services under one roof</span></div>
+        <div class="stat"><b data-to="4">4</b><span>Clear steps from first call to growth</span></div>
+        <div class="stat"><b data-to="3">3</b><span>Open website price plans</span></div>
+        <div class="stat">
+          <b data-to="100" data-suf="%">100%</b><span>White-hat, Google-approved SEO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHY CLIENTS STAY: four promise cards ==================== -->
+<section id="why">
+      <div class="wrap">
+        <h2>Why clients stay with us</h2>
+        <p class="lead">
+          Trust is earned in the details. Here is what you can count on from the first call to the final
+          report.
+        </p>
+        <div class="promises">
+          <div>
+            <h3>Prices you can see</h3>
+            <p>
+              Our plans are published openly. GST is stated clearly, so there are no surprises on the invoice.
+            </p>
+          </div>
+          <div>
+            <h3>Ethical SEO only</h3>
+            <p>We use white-hat, Google-approved methods that protect your site and keep results lasting.</p>
+          </div>
+          <div>
+            <h3>Plain-language reports</h3>
+            <p>You get regular updates on what we did and what moved, without jargon.</p>
+          </div>
+          <div>
+            <h3>A real team to call</h3>
+            <p>Talk to the people doing the work. Support stays with you after launch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SERVICES: one block per service (open and close list) ==================== -->
+<section id="services" style="padding-top: 20px">
+      <div class="wrap">
+        <h2>Everything your brand needs online</h2>
+        <p class="lead">Six services, one team. Start with what you need today and add more as you grow.</p>
+        <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+          <defs>
+            <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#08215a" />
+              <stop offset="1" stop-color="#1478e6" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="svc">
+          <details open>
+            <summary><span class="st"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><rect pathLength="1" x="3" y="4" width="18" height="16" rx="2"/><path pathLength="1" d="M3 9h18"/><path pathLength="1" d="M9.5 13.5L7 16l2.5 2.5"/><path pathLength="1" d="M14.5 13.5L17 16l-2.5 2.5"/></svg><span class="tt">Web development<small>Fast, mobile-friendly websites</small></span></span></summary>
+            <div class="sv"><div class="sx"><p>
+                Fast, mobile-friendly websites built around your goals: custom code, WordPress, or full
+                e-commerce. Every site is set up for search from day one.
+              </p><ul class="chips" aria-label="What you get"><li>Custom code</li><li>WordPress</li><li>E-commerce</li><li>SEO-ready from day one</li></ul><a class="btn main sq" href="#contact" data-svc="Web development">Get a quote for this <span aria-hidden="true">&rarr;</span></a></div>
+              <svg
+                class="il"
+                viewBox="0 0 320 200"
+                role="img"
+                aria-label="Illustration of a website being built"
+              >
+                <rect width="320" height="200" fill="url(#sg)" />
+                <rect x="40" y="35" width="240" height="135" rx="12" fill="#fff" />
+                <rect x="40" y="35" width="240" height="26" rx="12" fill="#e1eefd" />
+                <circle cx="58" cy="48" r="4" fill="#ff6b6b" />
+                <circle cx="72" cy="48" r="4" fill="#5fd8ff" />
+                <circle cx="86" cy="48" r="4" fill="#2bd37b" />
+                <rect x="58" y="76" width="90" height="12" rx="6" fill="#0f72d6" />
+                <rect x="58" y="96" width="130" height="8" rx="4" fill="#c4dbf5" />
+                <rect x="58" y="110" width="110" height="8" rx="4" fill="#c4dbf5" />
+                <rect x="58" y="130" width="60" height="22" rx="11" fill="#5fd8ff" />
+                <rect x="200" y="76" width="64" height="76" rx="10" fill="#13c4ff" />
+                <path
+                  d="M222 100l-10 14 10 14M242 100l10 14-10 14"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </details>
+          <details>
+            <summary><span class="st"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><circle pathLength="1" cx="11" cy="11" r="6"/><path pathLength="1" d="M16 16l5 5"/><path pathLength="1" d="M8 12.5l2-2 1.5 1.5L14 9"/></svg><span class="tt">SEO<small>Get found by the right customers on Google</small></span></span></summary>
+            <div class="sv"><div class="sx"><p>
+                Keyword research, on-page optimisation, link building and honest competitor analysis, so the
+                right customers find you on Google.
+              </p><ul class="chips" aria-label="What you get"><li>Keyword research</li><li>On-page optimisation</li><li>Link building</li><li>Competitor analysis</li></ul><a class="btn main sq" href="#contact" data-svc="SEO">Get a quote for this <span aria-hidden="true">&rarr;</span></a></div>
+              <svg
+                class="il"
+                viewBox="0 0 320 200"
+                role="img"
+                aria-label="Illustration of search rankings growing"
+              >
+                <rect width="320" height="200" fill="url(#sg)" />
+                <rect x="50" y="120" width="30" height="50" rx="6" fill="#0f72d6" />
+                <rect x="95" y="95" width="30" height="75" rx="6" fill="#4aa8ff" />
+                <rect x="140" y="70" width="30" height="100" rx="6" fill="#13c4ff" />
+                <path
+                  d="M50 100l50-30 45-15 50-22"
+                  fill="none"
+                  stroke="#5fd8ff"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                />
+                <circle cx="235" cy="85" r="38" fill="none" stroke="#fff" stroke-width="9" />
+                <path d="M262 113l28 28" stroke="#fff" stroke-width="10" stroke-linecap="round" />
+                <text
+                  x="235"
+                  y="97"
+                  text-anchor="middle"
+                  font-family="sans-serif"
+                  font-weight="800"
+                  font-size="32"
+                  fill="#5fd8ff"
+                >
+                  #1
+                </text>
+              </svg>
+            </div>
+          </details>
+          <details>
+            <summary><span class="st"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M4 5h16v11H9l-5 4z"/><path pathLength="1" d="M12 13.2s-3-1.7-3-3.8a1.6 1.6 0 013-.8 1.6 1.6 0 013 .8c0 2.1-3 3.8-3 3.8z"/></svg><span class="tt">Social media marketing<small>Build an audience that engages</small></span></span></summary>
+            <div class="sv"><div class="sx"><p>
+                Strategy, content and campaigns across the platforms your audience uses, with community
+                management and clear reporting.
+              </p><ul class="chips" aria-label="What you get"><li>Strategy</li><li>Content and campaigns</li><li>Community management</li><li>Clear reporting</li></ul><a class="btn main sq" href="#contact" data-svc="Social media marketing">Get a quote for this <span aria-hidden="true">&rarr;</span></a></div>
+              <svg
+                class="il"
+                viewBox="0 0 320 200"
+                role="img"
+                aria-label="Illustration of social media on a phone"
+              >
+                <rect width="320" height="200" fill="url(#sg)" />
+                <rect x="110" y="20" width="100" height="165" rx="18" fill="#fff" />
+                <rect x="120" y="40" width="80" height="60" rx="8" fill="#c4dbf5" />
+                <circle cx="160" cy="70" r="14" fill="#0f72d6" />
+                <rect x="120" y="110" width="60" height="8" rx="4" fill="#0f72d6" />
+                <rect x="120" y="124" width="80" height="6" rx="3" fill="#c4dbf5" />
+                <circle cx="225" cy="55" r="22" fill="#7fe3ff" />
+                <path d="M225 66l-9-9a5 5 0 017-7l2 2 2-2a5 5 0 017 7z" fill="#fff" />
+                <rect x="40" y="70" width="60" height="34" rx="12" fill="#13c4ff" />
+                <path d="M60 104l-8 12 18-12z" fill="#13c4ff" />
+                <circle cx="58" cy="87" r="4" fill="#fff" />
+                <circle cx="70" cy="87" r="4" fill="#fff" />
+                <circle cx="82" cy="87" r="4" fill="#fff" />
+                <path d="M256 124l5 10 11 1-8 8 2 11-10-6-10 6 2-11-8-8 11-1z" fill="#5fd8ff" />
+              </svg>
+            </div>
+          </details>
+          <details>
+            <summary><span class="st"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11z"/><circle pathLength="1" cx="8" cy="11" r="1"/><circle pathLength="1" cx="12" cy="7.5" r="1"/><circle pathLength="1" cx="16" cy="9.5" r="1"/></svg><span class="tt">Graphic design and branding<small>A brand that looks consistent everywhere</small></span></span></summary>
+            <div class="sv"><div class="sx"><p>
+                Logos, brand kits and social graphics that look consistent everywhere your customers meet you.
+              </p><ul class="chips" aria-label="What you get"><li>Logos</li><li>Brand kits</li><li>Social graphics</li></ul><a class="btn main sq" href="#contact" data-svc="Graphic design">Get a quote for this <span aria-hidden="true">&rarr;</span></a></div>
+              <svg
+                class="il"
+                viewBox="0 0 320 200"
+                role="img"
+                aria-label="Illustration of graphic design tools and colours"
+              >
+                <rect width="320" height="200" fill="url(#sg)" />
+                <circle cx="110" cy="90" r="48" fill="#0f72d6" />
+                <circle cx="165" cy="90" r="48" fill="#13c4ff" fill-opacity=".85" />
+                <circle cx="137" cy="132" r="48" fill="#5fd8ff" fill-opacity=".85" />
+                <path d="M225 40l45 45-60 30-15-15z" fill="#fff" />
+                <path d="M210 115l-8 22 22-8z" fill="#7fe3ff" />
+                <path
+                  d="M200 165q30-40 70-10"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="3"
+                  stroke-dasharray="5 5"
+                />
+                <rect x="266" y="150" width="9" height="9" fill="#fff" />
+              </svg>
+            </div>
+          </details>
+          <details>
+            <summary><span class="st"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><rect pathLength="1" x="3" y="5" width="18" height="14" rx="3"/><path pathLength="1" d="M10 9.5v5l4.5-2.5z"/></svg><span class="tt">Video editing<small>Polished videos for every platform</small></span></span></summary>
+            <div class="sv"><div class="sx"><p>
+                Polished videos for ads, reels and brand stories, delivered in the right format for every
+                platform.
+              </p><ul class="chips" aria-label="What you get"><li>Ads</li><li>Reels</li><li>Brand stories</li><li>Right format for each platform</li></ul><a class="btn main sq" href="#contact" data-svc="Video editing">Get a quote for this <span aria-hidden="true">&rarr;</span></a></div>
+              <svg
+                class="il"
+                viewBox="0 0 320 200"
+                role="img"
+                aria-label="Illustration of a video editing timeline"
+              >
+                <rect width="320" height="200" fill="url(#sg)" />
+                <rect x="50" y="30" width="220" height="104" rx="12" fill="#fff" />
+                <circle cx="160" cy="82" r="28" fill="#0f72d6" />
+                <path d="M152 68l22 14-22 14z" fill="#fff" />
+                <rect x="50" y="148" width="220" height="34" rx="8" fill="#fff" fill-opacity=".15" />
+                <rect x="56" y="155" width="70" height="20" rx="5" fill="#13c4ff" />
+                <rect x="130" y="155" width="50" height="20" rx="5" fill="#5fd8ff" />
+                <rect x="184" y="155" width="80" height="20" rx="5" fill="#4aa8ff" />
+                <rect x="150" y="144" width="3" height="42" fill="#fff" />
+              </svg>
+            </div>
+          </details>
+          <details>
+            <summary><span class="st"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M2 9l10-5 10 5-10 5z"/><path pathLength="1" d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/><path pathLength="1" d="M22 9v6"/></svg><span class="tt">Digital marketing courses<small>Practical training from certified mentors</small></span></span></summary>
+            <div class="sv"><div class="sx"><p>
+                Practical training in digital marketing, graphic design and video editing, taught by certified
+                mentors.
+              </p><ul class="chips" aria-label="What you get"><li>Digital marketing</li><li>Graphic design</li><li>Video editing</li></ul><a class="btn main sq" href="#contact" data-svc="Digital marketing course">Get a quote for this <span aria-hidden="true">&rarr;</span></a></div>
+              <svg
+                class="il"
+                viewBox="0 0 320 200"
+                role="img"
+                aria-label="Illustration of a graduation cap and learning"
+              >
+                <rect width="320" height="200" fill="url(#sg)" />
+                <path d="M160 30l100 40-100 40-100-40z" fill="#fff" />
+                <path d="M100 95v35c0 14 120 14 120 0V95l-60 24z" fill="#c4dbf5" />
+                <path d="M260 70v50" stroke="#5fd8ff" stroke-width="5" stroke-linecap="round" />
+                <circle cx="260" cy="126" r="8" fill="#5fd8ff" />
+                <rect x="100" y="160" width="120" height="16" rx="4" fill="#13c4ff" />
+                <rect x="110" y="150" width="100" height="12" rx="3" fill="#0f72d6" />
+              </svg>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROCESS: four working steps ==================== -->
+<section id="process" style="padding-top: 20px">
+      <div class="wrap">
+        <h2>A simple, predictable way of working</h2>
+        <ol class="steps" style="padding: 0">
+          <li>
+            <h3>Listen</h3>
+            <p>We learn your business, customers and goals before proposing anything.</p>
+          </li>
+          <li>
+            <h3>Plan</h3>
+            <p>You get a clear scope, timeline and price in writing.</p>
+          </li>
+          <li>
+            <h3>Build</h3>
+            <p>We design and develop with regular check-ins and your feedback.</p>
+          </li>
+          <li>
+            <h3>Grow</h3>
+            <p>We launch, measure and keep improving with transparent reports.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ==================== PUBLIC-SECTOR / GOVERNMENT: standards and trust section ==================== -->
+<section class="gov" id="trust">
+      <div class="wrap">
+        <h2>Built to the standards public projects demand</h2>
+        <p class="lead">
+          Government and public-sector work needs more than a good-looking site. This is how we deliver it.
+        </p>
+        <div class="gg">
+          <div class="gv">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path pathLength="140" d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+                <circle pathLength="140" cx="12" cy="12" r="3" />
+              </svg>
+            </div>
+            <h3>Accessible to every citizen</h3>
+            <p>
+              Keyboard-friendly, high-contrast, screen-reader-ready pages, built to WCAG 2.1 AA guidelines.
+            </p>
+          </div>
+          <div class="gv">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path pathLength="140" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+                <path pathLength="140" d="M8.5 12l2.5 2.5 4.5-5" />
+              </svg>
+            </div>
+            <h3>Secure by default</h3>
+            <p>HTTPS everywhere, secure coding practices, regular backups and timely updates.</p>
+          </div>
+          <div class="gv">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle pathLength="140" cx="12" cy="12" r="9" />
+                <path pathLength="140" d="M3 12h18" />
+                <path pathLength="140" d="M12 3c3 3 3 15 0 18" />
+                <path pathLength="140" d="M12 3c-3 3-3 15 0 18" />
+              </svg>
+            </div>
+            <h3>Hindi and English</h3>
+            <p>Content in both languages, so more people can read, understand and use the service.</p>
+          </div>
+          <div class="gv">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path pathLength="140" d="M4 17a8 8 0 1116 0" />
+                <path pathLength="140" d="M12 17l4-5" />
+              </svg>
+            </div>
+            <h3>Fast on any device</h3>
+            <p>Lightweight, mobile-first pages that load quickly, even on slow connections.</p>
+          </div>
+          <div class="gv">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path pathLength="140" d="M7 3h8l4 4v14H7z" />
+                <path pathLength="140" d="M15 3v4h4" />
+                <path pathLength="140" d="M10 12h6" />
+                <path pathLength="140" d="M10 16h6" />
+              </svg>
+            </div>
+            <h3>Clear documentation</h3>
+            <p>Written scope, timelines, progress reports and handover documents at every stage.</p>
+          </div>
+          <div class="gv">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path pathLength="140" d="M16 20v-1a4 4 0 00-4-4H8a4 4 0 00-4 4v1" />
+                <circle pathLength="140" cx="10" cy="7.5" r="3.5" />
+                <path pathLength="140" d="M20 20v-1a4 4 0 00-3-3.9" />
+                <path pathLength="140" d="M16 4.2a3.5 3.5 0 010 6.6" />
+              </svg>
+            </div>
+            <h3>A named point of contact</h3>
+            <p>One accountable contact and support after launch, so you are never left chasing answers.</p>
+          </div>
+        </div>
+        <div class="capb">
+          <a
+            class="btn main"
+            href="mailto:Webvzarditsolutions@gmail.com?subject=Capability%20statement%20request"
+            >Request our capability statement</a
+          ><small>We share our work approach, team details and references on request.</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PRICING: three plans. Change prices and features here. ==================== -->
+<section class="band" id="pricing">
+      <div class="wrap">
+        <h2>Pricing that’s open from the start</h2>
+        <p class="lead">
+          Website plans shown below. SEO, social media, design and video plans are available on request.
+        </p>
+        <div class="plans">
+          <div class="plan">
+            <h3>Static</h3>
+            <div class="pr">₹15,000</div>
+            <small>+ 18% GST</small>
+            <ul>
+              <li>Up to 5 pages</li>
+              <li>Mobile-friendly</li>
+              <li>Pre-designed layout</li>
+              <li>SEO setup</li>
+            </ul>
+          </div>
+          <div class="plan best">
+            <h3>Dynamic</h3>
+            <div class="pr">₹20,000</div>
+            <small>+ 18% GST · most chosen</small>
+            <ul>
+              <li>Up to 10 pages</li>
+              <li>Custom design</li>
+              <li>CMS integration</li>
+              <li>Device optimisation</li>
+              <li>Chat support</li>
+            </ul>
+          </div>
+          <div class="plan">
+            <h3>E-commerce</h3>
+            <div class="pr">₹45,000</div>
+            <small>+ 18% GST</small>
+            <ul>
+              <li>Up to 35 pages</li>
+              <li>Online store</li>
+              <li>Speed optimisation</li>
+              <li>Enhanced SEO</li>
+              <li>Maintenance support</li>
+            </ul>
+          </div>
+        </div>
+        <p class="note">Need something different? We’ll build a custom offer around your budget.</p>
+      </div>
+    </section>
+
+    <!-- ==================== ABOUT: founder message and team. Replace "Team member name" with real names. ==================== -->
+<section id="about">
+      <div class="wrap">
+        <h2>The people behind your project</h2>
+        <p class="lead">
+          You work directly with the team that plans, designs and builds, led by our founder.
+        </p>
+        <div class="ceo">
+          <figure class="pp" role="img" aria-label="Photo of Kuldeep Singh Shekhawat">KS</figure>
+          <div>
+            <p class="quote">
+              “In today’s digital age, success comes to those who blend creativity, strategy and technology.
+              That’s what we do for every client.”
+            </p>
+            <div class="who"><b>Kuldeep Singh Shekhawat</b>CEO and Founder, WebvzardITSolutions</div>
+            <p class="lead" style="margin-top: 20px">
+              Kuldeep leads WebvzardItSolutions’s digital marketing, web development and training work,
+              helping businesses and learners grow their online presence with practical, results-focused
+              plans.
+            </p>
+          </div>
+        </div>
+        <h3 class="crew-t">Meet the team</h3>
+        <div class="crew" style="margin-top: 28px; padding-top: 0; border-top: 0">
+          <figure>
+            <div class="pp" role="img" aria-label="Team member photo">TM</div>
+            <b>Team member name</b><span class="r">Digital Marketing Lead</span>
+          </figure>
+          <figure>
+            <div class="pp" role="img" aria-label="Team member photo">TM</div>
+            <b>Team member name</b><span class="r">Web Developer</span>
+          </figure>
+          <figure>
+            <div class="pp" role="img" aria-label="Team member photo">TM</div>
+            <b>Team member name</b><span class="r">Graphic and Video Designer</span>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CONTACT: phone, email, address and the enquiry form ==================== -->
+<section id="contact" style="padding-top: 20px">
+      <div class="wrap contact">
+        <div>
+          <h2>Let’s talk about your project</h2>
+          <p class="lead">Tell us what you need. We reply with honest advice and a clear quote.</p>
+          <ul class="ci">
+            <li><b>Call or WhatsApp</b><a href="tel:+919887133425">+91 98871 33425</a></li>
+            <li>
+              <b>Email</b><a href="mailto:Webvzarditsolutions@gmail.com">Webvzarditsolutions@gmail.com</a>
+            </li>
+            <li><b>Visit</b>39A Shekhawati Nagar, near Vaidya ji ka Chauraha, Nivaaru Road</li>
+          </ul>
+        </div>
+        <form id="f">
+          <input id="hp" class="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <label>Your name<input id="n" required maxlength="80" autocomplete="name" /></label>
+          <label
+            >Service you need<select id="s">
+              <option>Web development</option>
+              <option>SEO</option>
+              <option>Social media marketing</option>
+              <option>Graphic design</option>
+              <option>Video editing</option>
+              <option>Digital marketing course</option>
+            </select></label
+          >
+          <label>About your project<textarea id="m" rows="4" maxlength="600"></textarea></label>
+          <button class="btn main" type="submit">Send on WhatsApp</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+<footer>
+      <div class="wrap">
+        <span class="fl"
+          ><img src="images/logo-full.webp" alt="Webvzard IT Solutions logo" width="120" height="120" loading="lazy" decoding="async" /><span
+            >© 2026 Webvzard IT Solutions. All rights reserved.</span
+          ></span
+        ><span>Digital marketing, web and design, from Jaipur.</span>
+      </div>
+    </footer>
+    <!-- ==================== WHATSAPP CHAT BUTTON. To change the number, search 919887133425 ==================== -->
+<div class="wc">
+      <div class="wcard" id="wcard" role="dialog" aria-label="Chat with us on WhatsApp" aria-hidden="true">
+        <div class="wh">
+          <span class="av"><img src="images/logo.webp" alt="" /></span>
+          <div><b>WebvzardITSolutions</b><small>Chat with our team</small></div>
+          <button id="wx" aria-label="Close chat box">✕</button>
+        </div>
+        <div class="wb">
+          <div class="bub">Hi there 👋<br />Welcome to WebvzardITSolutions! How can we help you today?</div>
+        </div>
+        <a
+          class="wgo"
+          href="https://wa.me/919887133425?text=Hi%20WebvzardITSolutions%2C%20I%E2%80%99d%20like%20to%20know%20more%20about%20your%20services."
+          target="_blank"
+          rel="noopener noreferrer"
+          >Start chat on WhatsApp</a
+        >
+      </div>
+      <button class="wa" id="wab" aria-label="Chat on WhatsApp" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <script src="js/vendor/three.r128.min.js" defer></script>
+    <div class="cg" id="cg" aria-hidden="true"></div>
+    <script src="js/main.js" defer></script>
+  </body>
+</html>
