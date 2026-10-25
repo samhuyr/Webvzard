@@ -3,14 +3,14 @@
    --------------------------------------------------------------------------
    A. Navigation          E. Contact form to WhatsApp
    B. PDF links           F. Hero background curve
-   C. Services list       G. Scroll effects and counters
-   D. WhatsApp chat box   H. 3D hero object     I. Government section cards
+   D. WhatsApp chat box   G. Scroll effects and counters
+   H. 3D hero object      I. Government section cards
    J. Process timeline    K. Cursor glow    L. Intro clean-up
    M. Service quote buttons
    Quick edits:
      - PDF links: section B (the PDFS list)
      - WhatsApp number: section E (search 919887133425)
-   Note: three.js (js/vendor/) is loaded first by index.html, then this file runs.
+   Note: three.js (js/vendor/) is loaded on demand by section H (skipped on small phones).
    ========================================================================== */
 /* ----------------------------------------------------------------------
    A. NAVIGATION: darken the bar on scroll, open and close the mobile menu
@@ -39,11 +39,12 @@ mn.addEventListener("click", function (e) {
    B. PDF LINKS: paste your PDF addresses in the PDFS list below
    -------------------------------------------------------------------- */
 /* Paste your PDF links here, e.g. course:'https://yoursite.com/course.pdf' */
-var PDFS = { course: "", portfolio: "" };
+var PDFS = { course: "docs/webvzard-digital-marketing-with-ai-course.pdf", portfolio: "" };
 document.addEventListener("click", function (e) {
   var a = e.target.closest("[data-pdf]");
   if (!a) return;
   e.preventDefault();
+  if (window.openCourseViewer && window.openCourseViewer(a.dataset.pdf, a)) return;
   var u = PDFS[a.dataset.pdf];
   if (u) {
     window.open(u, "_blank", "noopener");
@@ -60,56 +61,97 @@ document.addEventListener("click", function (e) {
 });
 
 /* ----------------------------------------------------------------------
-   C. SERVICES LIST: smooth open and close, one item open at a time
+   B2. PDF VIEWER: the Course link opens a smooth full-screen slide viewer.
+       The pages are in docs/course/. "Open PDF" opens the original file.
    -------------------------------------------------------------------- */
 (function () {
-  var all = [].slice.call(document.querySelectorAll(".svc details")),
+  var N = 10,
+    pages = [],
+    alts = [
+      "Course overview: Digital Marketing with Artificial Intelligence, duration, delivery mode, level and audience",
+      "Core digital marketing fundamentals: modules 1 and 2",
+      "Search engine optimization and content marketing: modules 3 and 4",
+      "Email marketing and analytics: modules 5 to 8",
+      "Advanced marketing strategies: affiliate and influencer marketing, module 9",
+      "Advanced marketing strategies: marketing automation, CRM and e-commerce funnels, modules 10 and 11",
+      "How AI can help in digital marketing",
+      "AI in digital marketing: modules 1 to 3",
+      "AI in digital marketing: modules 4 to 7 and optional extras",
+      "Teachers, certification and contact details",
+    ];
+  for (var i = 1; i <= N; i++) pages.push("docs/course/page-" + (i < 10 ? "0" : "") + i + ".webp");
+  var root, box, stage, imgs = [], dots = [], cur = 0, last = null, live, prevB, nextB, closeB, from = null, open = false,
     rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
-  function run(d, from, to, done) {
-    if (rm) {
-      done && done();
-      return;
+  function el(t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h) e.innerHTML = h; return e; }
+  function build() {
+    root = el("div", "pv"); root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Course overview viewer");
+    box = el("div", "pv-box");
+    var bar = el("div", "pv-bar");
+    bar.appendChild(el("b", "", "Digital Marketing with AI: Course overview"));
+    bar.appendChild(el("span", "sp"));
+    var dl = el("a", "", "Open PDF"); dl.href = PDFS.course; dl.target = "_blank"; dl.rel = "noopener"; bar.appendChild(dl);
+    closeB = el("button", "", "Close"); closeB.type = "button"; closeB.setAttribute("aria-label", "Close course viewer"); bar.appendChild(closeB);
+    stage = el("div", "pv-stage");
+    pages.forEach(function (src, i) { var im = el("img"); im.alt = alts[i]; im.draggable = false; im.dataset.src = src; im.setAttribute("aria-hidden", "true"); stage.appendChild(im); imgs.push(im); });
+    prevB = el("button", "pv-arrow pv-prev", "&#8249;"); prevB.type = "button"; prevB.setAttribute("aria-label", "Previous page");
+    nextB = el("button", "pv-arrow pv-next", "&#8250;"); nextB.type = "button"; nextB.setAttribute("aria-label", "Next page");
+    stage.appendChild(prevB); stage.appendChild(nextB);
+    var foot = el("div", "pv-foot"); live = el("span"); live.setAttribute("aria-live", "polite");
+    var dw = el("div", "pv-dots");
+    for (var i = 0; i < N; i++) { var d = el("button"); d.type = "button"; d.setAttribute("aria-label", "Go to page " + (i + 1)); (function (k) { d.addEventListener("click", function () { go(k); }); })(i); dw.appendChild(d); dots.push(d); }
+    foot.appendChild(dw); foot.appendChild(live);
+    box.appendChild(bar); box.appendChild(stage); box.appendChild(foot); box.appendChild(el("div", "pv-tip", "Tip: turn your phone sideways for a bigger view, or tap Open PDF."));
+    root.appendChild(box); document.body.appendChild(root);
+    closeB.addEventListener("click", close);
+    root.addEventListener("click", function (e) { if (e.target === root) close(); });
+    prevB.addEventListener("click", function () { go(cur - 1); });
+    nextB.addEventListener("click", function () { go(cur + 1); });
+    var sx = 0;
+    stage.addEventListener("touchstart", function (e) { sx = e.changedTouches[0].clientX; }, { passive: true });
+    stage.addEventListener("touchend", function (e) { var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); }, { passive: true });
+  }
+  function load(i) { var im = imgs[i]; if (im && !im.src) im.src = im.dataset.src; }
+  function go(n) {
+    if (n < 0 || n >= N) return;
+    var dir = last === null ? 1 : n >= cur ? 1 : -1;
+    imgs.forEach(function (im) { im.style.setProperty("--in", (rm ? 0 : 42 * dir) + "px"); im.style.setProperty("--out", (rm ? 0 : -42 * dir) + "px"); });
+    load(n); load(n + 1); load(n - 1);
+    imgs.forEach(function (im, i) {
+      var isCur = i === n;
+      if (!isCur && im.classList.contains("cur")) { im.classList.remove("cur"); im.classList.add("out"); (function (x) { setTimeout(function () { x.classList.remove("out"); }, 650); })(im); }
+      if (isCur) { im.classList.remove("out"); im.classList.add("cur"); }
+      im.setAttribute("aria-hidden", isCur ? "false" : "true");
+    });
+    dots.forEach(function (d, i) { d.classList.toggle("on", i === n); if (i === n) d.setAttribute("aria-current", "true"); else d.removeAttribute("aria-current"); });
+    prevB.disabled = n === 0; nextB.disabled = n === N - 1;
+    live.textContent = "Page " + (n + 1) + " of " + N;
+    last = cur; cur = n;
+  }
+  function key(e) {
+    if (!open) return;
+    if (e.key === "Escape") close();
+    else if (e.key === "ArrowRight") go(cur + 1);
+    else if (e.key === "ArrowLeft") go(cur - 1);
+    else if (e.key === "Tab") {
+      var f = [].slice.call(root.querySelectorAll("a[href],button:not([disabled])")); if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
     }
-    d.busy = true;
-    d.style.overflow = "hidden";
-    var a = d.animate(
-      { height: [from + "px", to + "px"] },
-      { duration: 480, easing: "cubic-bezier(.22,.8,.22,1)" },
-    );
-    a.onfinish = function () {
-      d.style.overflow = "";
-      d.busy = false;
-      done && done();
-    };
   }
-  function shut(d) {
-    if (!d.open || d.busy) return;
-    var sm = d.querySelector("summary");
-    run(d, d.offsetHeight, sm.offsetHeight + 1, function () {
-      d.open = false;
-    });
-    if (rm) d.open = false;
+  function show(trigger) {
+    if (!root) { build(); document.addEventListener("keydown", key); }
+    from = trigger || document.activeElement; open = true; last = null;
+    document.documentElement.style.overflow = "hidden";
+    go(0);
+    requestAnimationFrame(function () { root.classList.add("on"); closeB.focus(); });
   }
-  function show(d) {
-    if (d.open || d.busy) return;
-    var from = d.offsetHeight;
-    d.open = true;
-    run(d, from, d.offsetHeight);
+  function close() {
+    if (!open) return; open = false; root.classList.remove("on");
+    document.documentElement.style.overflow = "";
+    if (from && from.focus) from.focus();
   }
-  all.forEach(function (d) {
-    d.querySelector("summary").addEventListener("click", function (e) {
-      e.preventDefault();
-      if (d.busy) return;
-      if (d.open) {
-        shut(d);
-      } else {
-        all.forEach(function (o) {
-          if (o !== d) shut(o);
-        });
-        show(d);
-      }
-    });
-  });
+  window.openCourseViewer = function (k, trigger) { if (k !== "course" || !PDFS.course) return false; show(trigger); return true; };
 })();
 
 /* ----------------------------------------------------------------------
@@ -212,7 +254,11 @@ document.getElementById("f").addEventListener("submit", function (e) {
       });
     }
   }
+  var heroOn = true;
+  if ("IntersectionObserver" in window)
+    new IntersectionObserver(function (en) { heroOn = en[0].isIntersecting; }).observe(cv.parentNode);
   function frame(now) {
+    if (document.hidden || !heroOn) { if (!rm) requestAnimationFrame(frame); return; }
     var k = rm ? 1 : Math.min((now - t0) / 3200, 1),
       e = 1 - Math.pow(1 - k, 3);
     c.clearRect(0, 0, W, H);
@@ -328,7 +374,7 @@ document.getElementById("f").addEventListener("submit", function (e) {
   });
   /* scroll reveal with stagger */
   var sel =
-      "h2,.lead,.promises>div,.svc details,.steps li,.plan,.note,.quote,.who,.ceo .pp,.crew-t,.crew figure,.ci li,form,.stat",
+      "h2,.lead,.promises>div,.sc,.steps li,.plan,.note,.quote,.who,.ceo .pp,.crew-t,.crew figure,.ci li,form,.stat",
     cnt = new Map();
   var io = new IntersectionObserver(
     function (en) {
@@ -366,9 +412,9 @@ document.getElementById("f").addEventListener("submit", function (e) {
 })();
 
 /* ----------------------------------------------------------------------
-   H. 3D HERO OBJECT (uses the Three.js library loaded in index.html)
+   H. 3D HERO OBJECT (Three.js is loaded on demand from js/vendor/, see the end of this section)
    -------------------------------------------------------------------- */
-(function () {
+function initHero3D() {
   var el = document.getElementById("g3"),
     T = window.THREE,
     rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -493,7 +539,24 @@ document.getElementById("f").addEventListener("submit", function (e) {
       vis = e[0].isIntersecting;
     }).observe(el);
   tick();
+}
+
+/* Load Three.js only when it helps: not on small phones or in data-saver mode,
+   and only after the page has finished its first paint. */
+(function () {
+  var small = matchMedia("(max-width:640px)").matches,
+    save = navigator.connection && navigator.connection.saveData;
+  if (small || save) return;
+  function load() {
+    var t = document.createElement("script");
+    t.src = "js/vendor/three.r128.min.js";
+    t.onload = initHero3D;
+    document.head.appendChild(t);
+  }
+  if ("requestIdleCallback" in window) requestIdleCallback(load, { timeout: 2500 });
+  else setTimeout(load, 1200);
 })();
+
 
 /* ----------------------------------------------------------------------
    I. GOVERNMENT SECTION: card animations

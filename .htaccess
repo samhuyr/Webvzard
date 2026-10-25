@@ -31,3 +31,11 @@ Options -Indexes
   ExpiresByType text/css "access plus 1 week"
   ExpiresByType application/javascript "access plus 1 week"
 </IfModule>
+
+# Course PDF: open in the browser viewer (the site-wide security policy would otherwise block it)
+<IfModule mod_headers.c>
+  <FilesMatch "\.pdf$">
+    Header always unset Content-Security-Policy
+    Header set Content-Disposition "inline"
+  </FilesMatch>
+</IfModule>

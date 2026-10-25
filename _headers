@@ -19,3 +19,8 @@
 
 /js/*
   Cache-Control: public, max-age=604800, must-revalidate
+
+/docs/*
+  ! Content-Security-Policy
+  Content-Disposition: inline
+  Cache-Control: public, max-age=86400
