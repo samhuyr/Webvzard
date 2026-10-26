@@ -39,7 +39,7 @@ mn.addEventListener("click", function (e) {
    B. PDF LINKS: paste your PDF addresses in the PDFS list below
    -------------------------------------------------------------------- */
 /* Paste your PDF links here, e.g. course:'https://yoursite.com/course.pdf' */
-var PDFS = { course: "docs/webvzard-digital-marketing-with-ai-course.pdf", portfolio: "" };
+var PDFS = { course: "docs/webvzard-digital-marketing-with-ai-course.pdf", portfolio: "docs/webvzard-portfolio.pdf" };
 document.addEventListener("click", function (e) {
   var a = e.target.closest("[data-pdf]");
   if (!a) return;
@@ -65,32 +65,51 @@ document.addEventListener("click", function (e) {
        The pages are in docs/course/. "Open PDF" opens the original file.
    -------------------------------------------------------------------- */
 (function () {
-  var N = 10,
-    pages = [],
-    alts = [
-      "Course overview: Digital Marketing with Artificial Intelligence, duration, delivery mode, level and audience",
-      "Core digital marketing fundamentals: modules 1 and 2",
-      "Search engine optimization and content marketing: modules 3 and 4",
-      "Email marketing and analytics: modules 5 to 8",
-      "Advanced marketing strategies: affiliate and influencer marketing, module 9",
-      "Advanced marketing strategies: marketing automation, CRM and e-commerce funnels, modules 10 and 11",
-      "How AI can help in digital marketing",
-      "AI in digital marketing: modules 1 to 3",
-      "AI in digital marketing: modules 4 to 7 and optional extras",
-      "Teachers, certification and contact details",
-    ];
-  for (var i = 1; i <= N; i++) pages.push("docs/course/page-" + (i < 10 ? "0" : "") + i + ".webp");
+  var CFG = {
+    course: {
+      dir: "docs/course/", N: 10, label: "Course overview viewer", title: "Digital Marketing with AI: Course overview", close: "Close course viewer",
+      alts: [
+        "Course overview: Digital Marketing with Artificial Intelligence, duration, delivery mode, level and audience",
+        "Core digital marketing fundamentals: modules 1 and 2",
+        "Search engine optimization and content marketing: modules 3 and 4",
+        "Email marketing and analytics: modules 5 to 8",
+        "Advanced marketing strategies: affiliate and influencer marketing, module 9",
+        "Advanced marketing strategies: marketing automation, CRM and e-commerce funnels, modules 10 and 11",
+        "How AI can help in digital marketing",
+        "AI in digital marketing: modules 1 to 3",
+        "AI in digital marketing: modules 4 to 7 and optional extras",
+        "Teachers, certification and contact details"
+      ]
+    },
+    portfolio: {
+      dir: "docs/portfolio/", N: 8, label: "Portfolio viewer", title: "Webvzard IT Solutions: Portfolio", close: "Close portfolio viewer",
+      alts: [
+        "Webvzard IT Solutions, a digital marketing agency in Jaipur: we drive business growth through effective digital strategies",
+        "Our projects, social media marketing clients: Instagram profiles of two clients",
+        "Social media marketing clients: five Instagram profiles",
+        "Social media marketing clients: a fitness gym, a college, a legal content creator, a clinic and an education creator",
+        "Social media marketing clients: a jewellery brand, a restaurant, a child development clinic, a menswear store and a foundation",
+        "Our projects, website clients: an online clothing store, a taxi service and an e-commerce site",
+        "Website clients: a fashion store, a hotel, a real estate company and a residential project",
+        "Thank you for your attention, with website and phone number"
+      ]
+    }
+  };
+  var inst = {};
+  function create(kind) {
+  var cfg = CFG[kind], N = cfg.N, pages = [], alts = cfg.alts;
+  for (var i = 1; i <= N; i++) pages.push(cfg.dir + "page-" + (i < 10 ? "0" : "") + i + ".webp");
   var root, box, stage, imgs = [], dots = [], cur = 0, last = null, live, prevB, nextB, closeB, from = null, open = false,
     rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
   function el(t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h) e.innerHTML = h; return e; }
   function build() {
-    root = el("div", "pv"); root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Course overview viewer");
+    root = el("div", "pv"); root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", cfg.label);
     box = el("div", "pv-box");
     var bar = el("div", "pv-bar");
-    bar.appendChild(el("b", "", "Digital Marketing with AI: Course overview"));
+    bar.appendChild(el("b", "", cfg.title));
     bar.appendChild(el("span", "sp"));
-    var dl = el("a", "", "Open PDF"); dl.href = PDFS.course; dl.target = "_blank"; dl.rel = "noopener"; bar.appendChild(dl);
-    closeB = el("button", "", "Close"); closeB.type = "button"; closeB.setAttribute("aria-label", "Close course viewer"); bar.appendChild(closeB);
+    var dl = el("a", "", "Open PDF"); dl.href = PDFS[kind]; dl.target = "_blank"; dl.rel = "noopener"; bar.appendChild(dl);
+    closeB = el("button", "", "Close"); closeB.type = "button"; closeB.setAttribute("aria-label", cfg.close); bar.appendChild(closeB);
     stage = el("div", "pv-stage");
     pages.forEach(function (src, i) { var im = el("img"); im.alt = alts[i]; im.draggable = false; im.dataset.src = src; im.setAttribute("aria-hidden", "true"); stage.appendChild(im); imgs.push(im); });
     prevB = el("button", "pv-arrow pv-prev", "&#8249;"); prevB.type = "button"; prevB.setAttribute("aria-label", "Previous page");
@@ -151,7 +170,14 @@ document.addEventListener("click", function (e) {
     document.documentElement.style.overflow = "";
     if (from && from.focus) from.focus();
   }
-  window.openCourseViewer = function (k, trigger) { if (k !== "course" || !PDFS.course) return false; show(trigger); return true; };
+  return show;
+  }
+  window.openCourseViewer = function (k, trigger) {
+    if (!CFG[k] || !PDFS[k]) return false;
+    if (!inst[k]) inst[k] = create(k);
+    inst[k](trigger);
+    return true;
+  };
 })();
 
 /* ----------------------------------------------------------------------
