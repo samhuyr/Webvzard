@@ -82,16 +82,20 @@ document.addEventListener("click", function (e) {
       ]
     },
     portfolio: {
-      dir: "docs/portfolio/", N: 8, label: "Portfolio viewer", title: "Webvzard IT Solutions: Portfolio", close: "Close portfolio viewer",
+      dir: "docs/portfolio/", N: 12, label: "Portfolio viewer", title: "Webvzard IT Solutions: Portfolio", close: "Close portfolio viewer",
       alts: [
-        "Webvzard IT Solutions, a digital marketing agency in Jaipur: we drive business growth through effective digital strategies",
+        "Webvzard IT Solutions, a digital marketing agency: we drive your business growth through effective digital strategies",
         "Our projects, social media marketing clients: Instagram profiles of two clients",
         "Social media marketing clients: five Instagram profiles",
-        "Social media marketing clients: a fitness gym, a college, a legal content creator, a clinic and an education creator",
-        "Social media marketing clients: a jewellery brand, a restaurant, a child development clinic, a menswear store and a foundation",
+        "Social media marketing clients: five more Instagram profiles",
+        "Social media marketing clients: five more Instagram profiles including a clinic and a creator",
         "Our projects, website clients: an online clothing store, a taxi service and an e-commerce site",
         "Website clients: a fashion store, a hotel, a real estate company and a residential project",
-        "Thank you for your attention, with website and phone number"
+        "Our creative: social media posters for a restaurant, including festival, party and dining promotions",
+        "Creative work for a jewellery brand: product and festival social media posts",
+        "Thank you for your attention, with website and phone number",
+        "Creative work for a menswear brand: product and lifestyle photos",
+        "Creative work for a child development clinic: awareness posters on early warning signs and developmental red flags"
       ]
     }
   };
