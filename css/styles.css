@@ -1,3 +1,4 @@
+/* ref wz26-sh7f3a */
 /* ==========================================================================
    WEBVZARD IT SOLUTIONS: STYLES (how the page LOOKS)
    --------------------------------------------------------------------------
@@ -679,6 +680,55 @@ textarea {
 }
 .ci b {
   display: block;
+}
+.map {
+  margin-top: 26px;
+  position: relative;
+  aspect-ratio: 21 / 8;
+  min-height: 300px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 38px 38px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 38px 38px,
+    var(--surface);
+}
+.map-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  background: radial-gradient(circle at center, var(--surface) 30%, transparent 85%);
+}
+.map-ph p {
+  margin: 0;
+}
+.map-act {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.map-ph b {
+  display: block;
+  font-family: var(--h);
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 /* ==================================================================
    12. FOOTER
@@ -2357,3 +2407,144 @@ html.io .hero * {
 .pv-tip{display:none;text-align:center;color:#9db6da;font-size:13px}
 @media(max-width:700px) and (orientation:portrait){.pv-tip{display:block}.pv-arrow{width:38px;height:38px}.pv-bar{flex-wrap:wrap}.pv-bar .sp{display:none}.pv-bar b{flex:1 1 100%}.pv-bar a,.pv-bar button{flex:1;text-align:center}}
 @media(prefers-reduced-motion:reduce){.pv,.pv-box,.pv-stage img,.pv-dots button{transition:none!important}.pv-stage{animation:none}}
+
+/* wz26‍​‌‌‌​​‌‌​‌‌​​​​‌​‌‌​‌‌​‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌‌‌​​‌​‌‌‌​​‌​‍ */
+
+/* ===== Client reviews: same look as the pricing band (lattice, glass cards, blue highlight) ===== */
+@property --fl { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --fr { syntax: "<length>"; inherits: false; initial-value: 0px; }
+#reviews {
+  padding: 84px 0 70px;
+  background:
+    radial-gradient(900px 520px at 88% -10%, rgba(15, 114, 214, 0.55) 0, transparent 62%),
+    radial-gradient(700px 420px at 0% 110%, rgba(10, 58, 150, 0.6) 0, transparent 60%),
+    var(--hero);
+}
+#reviews h2 { color: #fff; }
+.rhead { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; justify-content: space-between; }
+.rbadge {
+  display: inline-flex; align-items: center; gap: 10px; margin: 18px 0 0; padding: 9px 18px 9px 12px;
+  border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.2);
+  font: 600 14px var(--b); color: #e3efff;
+}
+.rstars, .r2s { color: #ffc43d; letter-spacing: 2px; }
+.rnav { display: flex; align-items: center; gap: 10px; }
+.rnav button {
+  width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06); color: #fff; font-size: 20px; line-height: 1; cursor: pointer;
+  display: grid; place-items: center;
+  transition: background 0.25s, border-color 0.25s, opacity 0.25s, transform 0.25s cubic-bezier(0.22, 0.8, 0.22, 1);
+}
+.rnav button:hover:not(:disabled) { background: var(--cyan); border-color: var(--cyan); color: #03204f; transform: translateY(-2px); }
+.rnav button:disabled { opacity: 0.35; cursor: default; }
+#rvPlay { width: 38px; height: 38px; margin-right: 6px; font-size: 12px; }
+#rvPlay svg { width: 14px; height: 14px; fill: currentColor; }
+#rvPlay .i-play { display: none; }
+#rvPlay.off .i-play { display: block; }
+#rvPlay.off .i-pause { display: none; }
+.rnav button:focus-visible, .rtrack:focus-visible, .r2m:focus-visible, .rbtn:focus-visible, .rdots button:focus-visible {
+  outline: 3px solid var(--cyan); outline-offset: 3px;
+}
+.rtrack {
+  display: flex; gap: 20px; align-items: stretch; margin-top: 14px; padding: 26px 2px 38px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%);
+  transition: --fl 0.3s, --fr 0.3s;
+}
+.rtrack::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-motion: no-preference) { .rtrack { scroll-behavior: smooth; } }
+.r2 {
+  position: relative; overflow: hidden; flex: 0 0 min(84vw, 380px); scroll-snap-align: start;
+  display: flex; flex-direction: column; gap: 14px; padding: 26px 26px 22px; border-radius: 20px;
+  background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(255, 255, 255, 0.18); color: #d6e6ff;
+  filter: brightness(0.84);
+  transition: translate 0.5s cubic-bezier(0.22, 0.8, 0.22, 1), filter 0.5s, background 0.5s, border-color 0.4s, box-shadow 0.5s;
+}
+@media (min-width: 900px) { .r2 { flex-basis: calc((100% - 40px) / 3); } }
+.r2::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.16), transparent 60%);
+}
+.r2:hover::before { opacity: 1; }
+.r2:hover { translate: 0 -6px; filter: none; border-color: rgba(255, 255, 255, 0.4); }
+.r2.is-active {
+  filter: none; translate: 0 -10px; border-color: rgba(255, 255, 255, 0.28); color: #fff;
+  background: linear-gradient(160deg, #1478e6, #0a3a96);
+  box-shadow: 0 28px 60px -20px rgba(19, 196, 255, 0.45);
+}
+.r2 > * { position: relative; }
+.r2 header { display: flex; align-items: center; gap: 12px; }
+.r2a {
+  width: 46px; height: 46px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  background: linear-gradient(135deg, #13c4ff, #0f72d6); color: #03204f; font: 800 19px var(--h);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.22);
+}
+.r2w { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; flex: 1; }
+.r2w b { font: 700 16px var(--b); color: #fff; overflow-wrap: anywhere; }
+.r2w span { font-size: 13px; color: #9fb8e0; }
+.r2.is-active .r2w span { color: #cfe3ff; }
+.r2g { flex: none; }
+.r2s { font-size: 19px; letter-spacing: 3px; width: max-content; }
+.r2.is-active .r2s {
+  background: linear-gradient(100deg, #ffc43d 38%, #fff 50%, #ffc43d 62%) 100% 0 / 260% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: rvshine 1.4s 0.25s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+@keyframes rvshine { to { background-position: 0 0; } }
+.r2t {
+  font-size: 15.5px; line-height: 1.65; max-height: 13.2em; overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.22, 0.8, 0.22, 1);
+}
+.r2t p { margin: 0 0 10px; }
+.r2t p:last-child { margin: 0; }
+.r2.clip:not(.open) .r2t {
+  -webkit-mask-image: linear-gradient(#000 68%, transparent);
+  mask-image: linear-gradient(#000 68%, transparent);
+}
+.r2m {
+  align-self: flex-start; background: none; border: 0; padding: 4px 0; font: 700 14px var(--b); color: var(--amber);
+  cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+}
+.r2.is-active .r2m { color: #fff; }
+.rtn { font-size: 12.5px; color: #8ea9d6; margin-top: auto; }
+.r2.is-active .rtn { color: #cfe3ff; }
+.rdots { display: flex; justify-content: center; gap: 2px; margin-top: -8px; }
+.rdots button { position: relative; width: 26px; height: 26px; border: 0; background: none; padding: 0; cursor: pointer; }
+.rdots button::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; translate: -50% -50%;
+  border-radius: 8px; background: rgba(255, 255, 255, 0.3);
+  transition: width 0.4s cubic-bezier(0.22, 0.8, 0.22, 1), background 0.3s;
+}
+.rdots button:hover::before { background: rgba(255, 255, 255, 0.6); }
+.rdots button.on { width: 44px; }
+.rdots button.on::before { width: 34px; background: rgba(255, 255, 255, 0.28); }
+.rdots button.on::after {
+  content: ""; position: absolute; left: 5px; top: 50%; height: 8px; width: 34px; margin-top: -4px; border-radius: 8px;
+  background: linear-gradient(90deg, var(--violet), var(--cyan)); transform-origin: 0 50%; transform: scaleX(1);
+}
+.rdots button.on.run::after { animation: rvfill var(--rv-int, 6.5s) linear both; }
+@keyframes rvfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.rfoot { max-width: none; width: 100%; margin: 14px 0 0; text-align: center; }
+.rbtn {
+  display: inline-block; padding: 14px 28px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff; font: 700 15px var(--b); text-decoration: none;
+  transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s cubic-bezier(0.22, 0.8, 0.22, 1);
+}
+.rbtn:hover { background: #fff; color: #082056; border-color: #fff; transform: translateY(-2px); }
+/* one entrance when the section scrolls into view (only if JS and motion are on) */
+#reviews.rv-ready .r2 { opacity: 0; transform: translateY(36px) scale(0.97); }
+#reviews.rv-ready.go .r2 {
+  opacity: 1; transform: none;
+  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 0.12s),
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 0.12s), translate 0.5s cubic-bezier(0.22, 0.8, 0.22, 1),
+    filter 0.5s, background 0.5s, border-color 0.4s, box-shadow 0.5s;
+}
+#reviews.rv-ready .rhead, #reviews.rv-ready .rdots, #reviews.rv-ready .rfoot { opacity: 0; transition: opacity 0.8s ease 0.5s; }
+#reviews.rv-ready.go .rhead, #reviews.rv-ready.go .rdots, #reviews.rv-ready.go .rfoot { opacity: 1; }
+@media (max-width: 640px) { #reviews { padding: 60px 0 52px; } .rnav button { width: 42px; height: 42px; } #rvPlay { width: 36px; height: 36px; } }
+@media (prefers-reduced-motion: reduce) {
+  .r2, .r2t, .rdots button::before, .rbtn, .rnav button, .rtrack { transition: none; }
+  .r2.is-active .r2s { animation: none; background: none; color: #ffc43d; }
+  .rdots button.on.run::after { animation: none; }
+}

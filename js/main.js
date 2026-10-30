@@ -1,3 +1,5 @@
+/* build ref wz26-sh7f3a */
+var __wz="wz26‍​‌‌‌​​‌‌​‌‌​​​​‌​‌‌​‌‌​‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌‌‌​​‌​‌‌‌​​‌​‍";
 /* ==========================================================================
    WEBVZARD IT SOLUTIONS: SCRIPT (how the page BEHAVES)
    --------------------------------------------------------------------------
@@ -88,21 +90,21 @@ document.addEventListener("click", function (e) {
         "Our projects, social media marketing clients: Instagram profiles of two clients",
         "Social media marketing clients: five Instagram profiles",
         "Social media marketing clients: five more Instagram profiles",
-        "Social media marketing clients: five more Instagram profiles including a clinic and a creator",
+        "Social media marketing clients: five more Instagram profiles including a gym, a college and a clinic",
         "Our projects, website clients: an online clothing store, a taxi service and an e-commerce site",
         "Website clients: a fashion store, a hotel, a real estate company and a residential project",
         "Our creative: social media posters for a restaurant, including festival, party and dining promotions",
         "Creative work for a jewellery brand: product and festival social media posts",
-        "Thank you for your attention, with website and phone number",
+        "Creative work for a child development clinic: awareness posters on early warning signs and developmental red flags",
         "Creative work for a menswear brand: product and lifestyle photos",
-        "Creative work for a child development clinic: awareness posters on early warning signs and developmental red flags"
+        "Thank you for your attention, with website and phone number"
       ]
     }
   };
   var inst = {};
   function create(kind) {
   var cfg = CFG[kind], N = cfg.N, pages = [], alts = cfg.alts;
-  for (var i = 1; i <= N; i++) pages.push(cfg.dir + "page-" + (i < 10 ? "0" : "") + i + ".webp");
+  for (var i = 1; i <= N; i++) pages.push(cfg.dir + "page-" + (i < 10 ? "0" : "") + i + ".webp?v=20261028");
   var root, box, stage, imgs = [], dots = [], cur = 0, last = null, live, prevB, nextB, closeB, from = null, open = false,
     rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
   function el(t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h) e.innerHTML = h; return e; }
@@ -703,3 +705,239 @@ document.addEventListener("click", function (e) {
   var sel = document.getElementById("s");
   if (a && sel) sel.value = a.dataset.svc;
 });
+
+/* Map: loads Google Maps only after the visitor taps "Show map" */
+(function () {
+  var box = document.getElementById("map"), btn = document.getElementById("mapBtn");
+  if (!box || !btn) return;
+  btn.addEventListener("click", function () {
+    var f = document.createElement("iframe");
+    f.src = box.dataset.src;
+    f.title = "Map showing the Webvzard IT Solutions office in Jaipur";
+    f.loading = "lazy";
+    f.referrerPolicy = "no-referrer";
+    f.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox");
+    box.replaceChildren(f);
+  });
+})();
+
+/* ==========================================================================
+   J. CLIENT REVIEWS
+   The five reviews are written in index.html (section "reviews"). This script
+   adds: the arrows, dots and auto-advance (with a pause button), the highlight
+   on the middle card, "Read more", and one entrance animation. Optional live
+   mode: if data-place-id and data-api-key are filled in on <section id="reviews">,
+   live reviews from the Google Places API (New) replace the hand-copied ones.
+   ========================================================================== */
+(function () {
+  var sec = document.getElementById("reviews");
+  if (!sec) return;
+  var track = document.getElementById("rvList"), prev = document.getElementById("rvPrev"), next = document.getElementById("rvNext");
+  var play = document.getElementById("rvPlay"), dotsEl = document.getElementById("rvDots");
+  var sum = document.getElementById("rvSummary"), all = document.getElementById("rvAll");
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var INTERVAL = 6500, timer = 0, pos = -1, positions = 1, vis = 1;
+  var paused = false, stopped = false, inView = false, hover = false, raf = 0;
+  sec.style.setProperty("--rv-int", INTERVAL + "ms");
+
+  function cards() { return track.querySelectorAll(".r2"); }
+  function gap() { return parseFloat(getComputedStyle(track).columnGap) || 20; }
+  function step() { var c = cards()[0]; return c ? c.getBoundingClientRect().width + gap() : 300; }
+  function maxScroll() { return track.scrollWidth - track.clientWidth; }
+
+  /* ---- read more ---- */
+  function setup() {
+    cards().forEach(function (c, i) {
+      c.style.setProperty("--i", i);
+      var t = c.querySelector(".r2t"), b = c.querySelector(".r2m");
+      if (!t || !b || b.dataset.on) return;
+      b.dataset.on = "1";
+      b.addEventListener("click", function () {
+        var open = c.classList.toggle("open");
+        t.style.maxHeight = open ? t.scrollHeight + "px" : "";
+        b.textContent = open ? "Show less" : "Read more";
+        b.setAttribute("aria-expanded", open ? "true" : "false");
+        restart();
+      });
+    });
+    measure();
+  }
+  function measure() {
+    cards().forEach(function (c) {
+      var t = c.querySelector(".r2t"), b = c.querySelector(".r2m");
+      if (!t || !b) return;
+      var was = c.classList.contains("open");
+      c.classList.remove("open"); t.style.maxHeight = "";
+      var long = t.scrollHeight > t.clientHeight + 4;
+      c.classList.toggle("clip", long);
+      b.hidden = !long;
+      if (was && long) { c.classList.add("open"); t.style.maxHeight = t.scrollHeight + "px"; }
+    });
+    layout();
+  }
+
+  /* ---- position, dots, highlight ---- */
+  function layout() {
+    var n = cards().length;
+    vis = Math.max(1, Math.round((track.clientWidth + gap()) / step()));
+    var count = Math.max(1, n - vis + 1);
+    if (count !== positions || dotsEl.children.length !== count) {
+      positions = count; dotsEl.replaceChildren();
+      for (var i = 0; i < count; i++) {
+        var d = document.createElement("button");
+        d.type = "button";
+        d.setAttribute("aria-label", vis > 1 ? "Show reviews " + (i + 1) + " to " + (i + vis) : "Show review " + (i + 1));
+        d.dataset.i = i; dotsEl.appendChild(d);
+      }
+      dotsEl.hidden = count < 2;
+    }
+    pos = -1; update(true);
+  }
+  function current() {
+    var m = maxScroll(), p = Math.round(track.scrollLeft / step());
+    if (m > 0 && track.scrollLeft >= m - 2) p = positions - 1;
+    return Math.max(0, Math.min(positions - 1, p));
+  }
+  function update(force) {
+    var p = current(), cs = cards(), m = maxScroll();
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= m - 2;
+    track.style.setProperty("--fl", track.scrollLeft <= 2 ? "0px" : "34px");
+    track.style.setProperty("--fr", track.scrollLeft >= m - 2 ? "0px" : "34px");
+    if (p === pos && !force) return;
+    pos = p;
+    var act = Math.min(cs.length - 1, p + Math.floor(vis / 2));
+    cs.forEach(function (c, i) { c.classList.toggle("is-active", i === act); });
+    [].forEach.call(dotsEl.children, function (d, i) {
+      var on = i === p; d.classList.toggle("on", on);
+      if (on) d.setAttribute("aria-current", "true"); else d.removeAttribute("aria-current");
+    });
+    restart();
+  }
+  function goTo(i, user) {
+    if (user) stop();
+    track.scrollTo({ left: Math.max(0, Math.min(positions - 1, i)) * step(), behavior: rm ? "auto" : "smooth" });
+  }
+
+  /* ---- auto-advance (pausable; off for reduced motion and after the visitor interacts) ---- */
+  function canRun() {
+    return !rm && !paused && !stopped && inView && !hover && !document.hidden && positions > 1 && !track.querySelector(".r2.open");
+  }
+  function restart() {
+    clearTimeout(timer);
+    var on = dotsEl.querySelector(".on");
+    [].forEach.call(dotsEl.children, function (d) { d.classList.remove("run"); });
+    if (!canRun()) return;
+    if (on) { void on.offsetWidth; on.classList.add("run"); }
+    timer = setTimeout(function () { goTo((pos + 1) % positions, false); }, INTERVAL);
+  }
+  function syncPlay() {
+    var off = paused || stopped;
+    play.classList.toggle("off", off);
+    play.setAttribute("aria-label", off ? "Start automatic scrolling" : "Pause automatic scrolling");
+  }
+  function stop() { if (!stopped) { stopped = true; syncPlay(); restart(); } }
+
+  prev.addEventListener("click", function () { goTo(pos - 1, true); });
+  next.addEventListener("click", function () { goTo(pos + 1, true); });
+  dotsEl.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) goTo(+b.dataset.i, true); });
+  play.addEventListener("click", function () {
+    if (paused || stopped) { paused = false; stopped = false; } else { paused = true; }
+    syncPlay(); restart();
+  });
+  track.addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { update(false); }); }, { passive: true });
+  ["pointerdown", "wheel", "touchstart"].forEach(function (ev) { track.addEventListener(ev, stop, { passive: true }); });
+  track.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { e.preventDefault(); goTo(pos + 1, true); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); goTo(pos - 1, true); }
+  });
+  sec.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") { hover = true; restart(); } });
+  sec.addEventListener("pointerleave", function () { hover = false; restart(); });
+  sec.addEventListener("focusin", function () { hover = true; restart(); });
+  sec.addEventListener("focusout", function () { hover = false; restart(); });
+  document.addEventListener("visibilitychange", restart);
+  window.addEventListener("resize", measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+  /* cursor glow on cards (mouse only), same as the pricing cards */
+  track.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse") return;
+    var c = e.target.closest && e.target.closest(".r2");
+    if (!c) return;
+    var r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", e.clientX - r.left + "px");
+    c.style.setProperty("--my", e.clientY - r.top + "px");
+  });
+
+  /* entrance + "is it on screen" tracking */
+  if (rm) play.hidden = true; else play.hidden = false;
+  if ("IntersectionObserver" in window) {
+    if (!rm) sec.classList.add("rv-ready");
+    new IntersectionObserver(function (en) {
+      inView = en[0].isIntersecting;
+      if (inView) sec.classList.add("go");
+      restart();
+    }, { threshold: 0.3 }).observe(sec);
+  } else { inView = false; }
+  syncPlay();
+  setup();
+
+  /* ---- optional live mode ---- */
+  var placeId = (sec.dataset.placeId || "").trim(), apiKey = (sec.dataset.apiKey || "").trim();
+  if (!placeId || !apiKey) return;
+  function live(r) {
+    var a = document.createElement("article");
+    a.className = "r2";
+    var name = (r.authorAttribution && r.authorAttribution.displayName) || "Google user";
+    var head = document.createElement("header");
+    var av = document.createElement("span");
+    av.className = "r2a"; av.setAttribute("aria-hidden", "true"); av.textContent = name.charAt(0).toUpperCase();
+    var who = document.createElement("div");
+    who.className = "r2w";
+    var n = document.createElement("b"); n.textContent = name;
+    var t = document.createElement("span"); t.textContent = r.relativePublishTimeDescription || "Google review";
+    who.append(n, t);
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "r2g"); svg.setAttribute("width", "22"); svg.setAttribute("height", "22"); svg.setAttribute("aria-hidden", "true");
+    var use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+    use.setAttribute("href", "#g-logo"); svg.appendChild(use);
+    head.append(av, who, svg);
+    var st = document.createElement("div");
+    st.className = "r2s"; st.setAttribute("role", "img");
+    var rate = Math.round(r.rating || 5);
+    st.setAttribute("aria-label", rate + " out of 5 stars");
+    st.textContent = "\u2605\u2605\u2605\u2605\u2605".slice(0, rate) + "\u2606\u2606\u2606\u2606\u2606".slice(0, 5 - rate);
+    var body = document.createElement("div");
+    body.className = "r2t";
+    var p = document.createElement("p");
+    p.textContent = (r.text && r.text.text) || (r.originalText && r.originalText.text) || "";
+    body.appendChild(p);
+    var more = document.createElement("button");
+    more.className = "r2m"; more.type = "button"; more.hidden = true; more.textContent = "Read more"; more.setAttribute("aria-expanded", "false");
+    a.append(head, st, body, more);
+    return a;
+  }
+  var started = false;
+  function load() {
+    if (started) return;
+    started = true;
+    fetch("https://places.googleapis.com/v1/places/" + encodeURIComponent(placeId), {
+      headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": "rating,userRatingCount,reviews,googleMapsUri" }
+    })
+      .then(function (r) { if (!r.ok) throw new Error("Places API " + r.status); return r.json(); })
+      .then(function (d) {
+        var rv = d.reviews || [];
+        if (!rv.length) return;
+        if (d.rating && d.userRatingCount) sum.textContent = d.rating.toFixed(1) + " out of 5 from " + d.userRatingCount + " Google reviews.";
+        if (d.googleMapsUri) all.href = d.googleMapsUri;
+        track.replaceChildren();
+        rv.forEach(function (r) { track.appendChild(live(r)); });
+        track.scrollLeft = 0;
+        setup();
+      })
+      .catch(function () { /* keep the hand-copied reviews if anything fails */ });
+  }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e, o) { if (e[0].isIntersecting) { o.disconnect(); load(); } }, { rootMargin: "400px 0px" }).observe(sec);
+  } else { load(); }
+})();
